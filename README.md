@@ -1,11 +1,5 @@
 # StrLua-Module
 
-## 🙂 Introduction 🙂
-
-Hello Developers.
-
-Today my friend @gamer14_123 have made a module and decided to open source it for developers. The module will provides developers a set of string manipulation functions, similar to the str module in Python. Which allows you to perform various operations on strings, such as trimming, padding, truncating, searching, replacing, splitting, and formatting.
-
 ## **🧐 What does this module do? 🧐**
 
 StrLua is a Lua module that provides a set of string manipulation functions, similar to the str module in Python. It allows you to perform various operations on strings, such as trimming, padding, truncating, searching, replacing, splitting, and formatting.
