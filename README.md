@@ -11,4 +11,5 @@ People should use StrLua because it provides a convenient and efficient way to w
 ## **📝 Contact Information 🗣️**
 
 **Discord:** sutart_da_penguin (sutart) or noob1182 (sir_pretender)
+
 **Discord Id (Backup incase name changed):** 855754836548648960 (sutart) or 1199552739055767592 (noob1182)
