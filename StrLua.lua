@@ -10,7 +10,6 @@ Some Addition function are listed bellow
 binfind(sortedstr,str) --> str or -1 if not found
 Slice thingy (scroll down below)
 in
-sha256(str)
 base64_decode(str) --> str
 base64_encode(str) --> str
 morse_decode(str) --> str
@@ -72,23 +71,23 @@ If the input string is not sorted, you'll need to sort it first, which would add
 ]]
 
 function StrLua.binfind(sortedString, target)
-    if type(sortedString) ~= "string" or type(target) ~= "string" then
-        error("binfind: Both sortedString and target must be strings")
-    end
+	if type(sortedString) ~= "string" or type(target) ~= "string" then
+		error("binfind: Both sortedString and target must be strings")
+	end
 
-    local low, high = 1, #sortedString
-    while low <= high do
-        local mid = math.floor((low + high) / 2)
-        local midStr = sortedString:sub(mid, mid + #target - 1)
-        if midStr == target then
-            return mid, "Substring found"
-        elseif midStr < target then
-            low = mid + 1
-        else
-            high = mid - 1
-        end
-    end
-    return -1
+	local low, high = 1, #sortedString
+	while low <= high do
+		local mid = math.floor((low + high) / 2)
+		local midStr = sortedString:sub(mid, mid + #target - 1)
+		if midStr == target then
+			return mid, "Substring found"
+		elseif midStr < target then
+			low = mid + 1
+		else
+			high = mid - 1
+		end
+	end
+	return -1
 end
 
 --String Slice (same as str[0:5]) or whatever
@@ -120,91 +119,90 @@ Returns a new string or table, does not modify the original.
 If step is not provided, it defaults to 1.
 ]]
 
-
+--[[
 function string.__index(s, k)
-    if type(k) == "string" then
-        local start, stop, step = k:match("^(%-?%d*)%:(%-?%d*)%:(%-?%d*)$")
-        if start then
-            start = tonumber(start)
-            stop = tonumber(stop)
-            step = tonumber(step)
-            if start and stop and step then
-                if start < 1 or start > #s then
-                    error("Start index out of range")
-                end
-                if stop < 1 or stop > #s then
-                    error("Stop index out of range")
-                end
-                if step < 1 then
-                    error("Step must be a positive integer")
-                end
-                return string.slice(s, start, stop, step)
-            elseif start and stop then
-                if start < 1 or start > #s then
-                    error("Start index out of range")
-                end
-                if stop < 1 or stop > #s then
-                    error("Stop index out of range")
-                end
-                return string.slice(s, start, stop)
-            elseif start then
-                if start < 1 or start > #s then
-                    error("Start index out of range")
-                end
-                return string.slice(s, start)
-            else
-                error("Invalid slice syntax")
-            end
-        else
-            error("Invalid slice syntax")
-        end
-    elseif type(k) == "table" then
-        if #k < 1 or #k > 3 then
-            error("Invalid slice table")
-        end
-        local start, stop, step = k[1], k[2], k[3]
-        if start and stop and step then
-            if type(start) ~= "number" or type(stop) ~= "number" or type(step) ~= "number" then
-                error("Invalid slice table")
-            end
-            if start < 1 or start > #s then
-                error("Start index out of range")
-            end
-            if stop < 1 or stop > #s then
-                error("Stop index out of range")
-            end
-            if step < 1 then
-                error("Step must be a positive integer")
-            end
-            return string.slice(s, start, stop, step)
-        elseif start and stop then
-            if type(start) ~= "number" or type(stop) ~= "number" then
-                error("Invalid slice table")
-            end
-            if start < 1 or start > #s then
-                error("Start index out of range")
-            end
-            if stop < 1 or stop > #s then
-                error("Stop index out of range")
-            end
-            return string.slice(s, start, stop)
-        elseif start then
-            if type(start) ~= "number" then
-                error("Invalid slice table")
-            end
-            if start < 1 or start > #s then
-                error("Start index out of range")
-            end
-            return string.slice(s, start)
-        else
-            error("Invalid slice table")
-        end
-    else
-        return s:sub(k, k)
-    end
+	if type(k) == "string" then
+		local start, stop, step = k:match("^(%-?%d*)%:(%-?%d*)%:(%-?%d*)$")
+		if start then
+			start = tonumber(start)
+			stop = tonumber(stop)
+			step = tonumber(step)
+			if start and stop and step then
+				if start < 1 or start > #s then
+					error("Start index out of range")
+				end
+				if stop < 1 or stop > #s then
+					error("Stop index out of range")
+				end
+				if step < 1 then
+					error("Step must be a positive integer")
+				end
+				return string.slice(s, start, stop, step)
+			elseif start and stop then
+				if start < 1 or start > #s then
+					error("Start index out of range")
+				end
+				if stop < 1 or stop > #s then
+					error("Stop index out of range")
+				end
+				return string.slice(s, start, stop)
+			elseif start then
+				if start < 1 or start > #s then
+					error("Start index out of range")
+				end
+				return string.slice(s, start)
+			else
+				error("Invalid slice syntax")
+			end
+		else
+			error("Invalid slice syntax")
+		end
+	elseif type(k) == "table" then
+		if #k < 1 or #k > 3 then
+			error("Invalid slice table")
+		end
+		local start, stop, step = k[1], k[2], k[3]
+		if start and stop and step then
+			if type(start) ~= "number" or type(stop) ~= "number" or type(step) ~= "number" then
+				error("Invalid slice table")
+			end
+			if start < 1 or start > #s then
+				error("Start index out of range")
+			end
+			if stop < 1 or stop > #s then
+				error("Stop index out of range")
+			end
+			if step < 1 then
+				error("Step must be a positive integer")
+			end
+			return string.slice(s, start, stop, step)
+		elseif start and stop then
+			if type(start) ~= "number" or type(stop) ~= "number" then
+				error("Invalid slice table")
+			end
+			if start < 1 or start > #s then
+				error("Start index out of range")
+			end
+			if stop < 1 or stop > #s then
+				error("Stop index out of range")
+			end
+			return string.slice(s, start, stop)
+		elseif start then
+			if type(start) ~= "number" then
+				error("Invalid slice table")
+			end
+			if start < 1 or start > #s then
+				error("Start index out of range")
+			end
+			return string.slice(s, start)
+		else
+			error("Invalid slice table")
+		end
+	else
+		return s:sub(k, k)
+	end
 end
-
-
+]]
 --In (from python)
 
 --[[
@@ -230,305 +228,203 @@ This method is case-sensitive for strings.
 For tables, this method checks for exact equality of values.
 This method only works for strings and tables, not for other types.
 ]]
+--[[
 function string.__in(s, val)
-    return s:find(val) ~= nil
+	return s:find(val) ~= nil
 end
-
-
---Sha256 (guess u already khow how to use this)
-
-function StrLua.sha256(str)
-    if type(str) ~= "string" then
-        error("sha256: Argument must be a string")
-    end
-
-    local function leftrotate(n, b)
-        return (n << b) | (n >> (32 - b))
-    end
-
-    local function rightrotate(n, b)
-        return (n >> b) | (n << (32 - b))
-    end
-
-    local function add(x, y)
-        return (x + y) & 0xFFFFFFFF
-    end
-
-    local function rotr(x, n)
-        return rightrotate(x, n)
-    end
-
-    local function sigma0(x)
-        return rotr(x, 2) ~ rotr(x, 13) ~ rotr(x, 22)
-    end
-
-    local function sigma1(x)
-        return rotr(x, 6) ~ rotr(x, 11) ~ rotr(x, 25)
-    end
-
-    local function gamma0(x)
-        return rotr(x, 7) ~ rotr(x, 18) ~ rightrotate(x, 3)
-    end
-
-    local function gamma1(x)
-        return rotr(x, 17) ~ rotr(x, 19) ~ rightrotate(x, 10)
-    end
-
-    local function sha256_compress(h, m)
-        local w = {}
-        for i = 0, 15 do
-            w[i] = m[i * 4 + 1] * 0x1000000 + m[i * 4 + 2] * 0x10000 + m[i * 4 + 3] * 0x100 + m[i * 4 + 4]
-        end
-
-        for i = 16, 63 do
-            w[i] = add(gamma1(w[i - 2]), w[i - 7], gamma0(w[i - 15]), w[i - 16])
-        end
-
-        local a, b, c, d, e, f, g, h = h[1], h[2], h[3], h[4], h[5], h[6], h[7], h[8]
-        for i = 0, 63 do
-            local s0 = sigma0(a)
-            local maj = (a ~ b) ~ (a ~ c) ~ (b ~ c)
-            local t2 = s0 + maj
-            local s1 = sigma1(e)
-            local ch = (e ~ f) ~ ((~e) ~ g)
-            local t1 = h[i] + t2 + s1 + ch + 0x428a2f98d728ae22
-            h = {(t1 ~ (t1 >> 32)) & 0xFFFFFFFF, b, c, d, (e + t1) & 0xFFFFFFFF, f, g, h}
-            a, b, c, d, e, f, g, h = h[1], h[2], h[3], h[4], h[5], h[6], h[7], h[8]
-        end
-
-        for i = 1, 8 do
-            h[i] = add(h[i], m[i])
-        end
-
-        return h
-    end
-
-    local function sha256(str)
-        local h = {0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19}
-        local m = {}
-        for i = 1, #str do
-            m[#m + 1] = str:byte(i)
-        end
-
-        m[#m + 1] = 0x80
-        while #m % 64 ~= 56 do
-            m[#m + 1] = 0
-        end
-
-        local len = #str * 8
-        for i = 1, 8 do
-            m[#m + 1] = len % 0x100
-            len = math.floor(len / 0x100)
-        end
-
-        for i = 1, #m, 64 do
-            h = sha256_compress(h, {m[i], m[i + 1], m[i + 2], m[i + 3], m[i + 4], m[i + 5], m[i + 6], m[i + 7], m[i + 8], m[i + 9], m[i + 10], m[i + 11], m[i + 12], m[i + 13], m[i + 14], m[i + 15]})
-        end
-
-        local hash = ""
-        for i = 1, 8 do
-            hash = hash.. string.format("%08x", h[i])
-        end
-
-        return hash
-    end
-
-    return sha256(str)
-end
-
-
+]]
 --Base64 decode and encode(prob u khow how to use this too
 
 function StrLua.base64_encode(str)
-    if type(str) ~= "string" then
-        error("base64_encode: Argument must be a string")
-    end
+	if type(str) ~= "string" then
+		error("base64_encode: Argument must be a string")
+	end
 
-    local b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-    local result = ""
+	local b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+	local result = ""
 
-    for i = 1, #str, 3 do
-        local chunk = str:sub(i, i + 2)
-        local byte1, byte2, byte3 = chunk:byte(1, -1)
+	for i = 1, #str, 3 do
+		local chunk = str:sub(i, i + 2)
+		local byte1, byte2, byte3 = chunk:byte(1, -1)
 
-        local b64byte1 = math.floor(byte1 / 4)
-        local b64byte2 = (byte1 % 4) * 16 + math.floor(byte2 / 16)
-        local b64byte3 = (byte2 % 16) * 4 + math.floor(byte3 / 64)
-        local b64byte4 = byte3 % 64
+		local b64byte1 = math.floor(byte1 / 4)
+		local b64byte2 = (byte1 % 4) * 16 + math.floor(byte2 / 16)
+		local b64byte3 = (byte2 % 16) * 4 + math.floor(byte3 / 64)
+		local b64byte4 = byte3 % 64
 
-        result = result .. b64chars:sub(b64byte1 + 1, b64byte1 + 1) ..
-                         b64chars:sub(b64byte2 + 1, b64byte2 + 1) ..
-                         (i + 2 > #str and "=" or b64chars:sub(b64byte3 + 1, b64byte3 + 1)) ..
-                         (i + 1 > #str and "=" or b64chars:sub(b64byte4 + 1, b64byte4 + 1))
-    end
+		result = result .. b64chars:sub(b64byte1 + 1, b64byte1 + 1) ..
+			b64chars:sub(b64byte2 + 1, b64byte2 + 1) ..
+			(i + 2 > #str and "=" or b64chars:sub(b64byte3 + 1, b64byte3 + 1)) ..
+			(i + 1 > #str and "=" or b64chars:sub(b64byte4 + 1, b64byte4 + 1))
+	end
 
-    return result
+	return result
 end
 
 function StrLua.base64_decode(str)
-    if type(str) ~= "string" then
-        error("base64_decode: Argument must be a string")
-    end
+	if type(str) ~= "string" then
+		error("base64_decode: Argument must be a string")
+	end
 
-    local b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-    local result = ""
+	local b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+	local result = ""
 
-    str = str:gsub("%s+", "") -- remove whitespace
+	str = str:gsub("%s+", "") -- remove whitespace
 
-    for i = 1, #str, 4 do
-        local chunk = str:sub(i, i + 3)
-        local b64byte1, b64byte2, b64byte3, b64byte4 = chunk:byte(1, -1)
+	for i = 1, #str, 4 do
+		local chunk = str:sub(i, i + 3)
+		local b64byte1, b64byte2, b64byte3, b64byte4 = chunk:byte(1, -1)
 
-        b64byte1 = b64chars:find(chunk:sub(1, 1)) - 1
-        b64byte2 = b64chars:find(chunk:sub(2, 2)) - 1
-        b64byte3 = b64chars:find(chunk:sub(3, 3)) - 1
-        b64byte4 = b64chars:find(chunk:sub(4, 4)) - 1
+		b64byte1 = b64chars:find(chunk:sub(1, 1)) - 1
+		b64byte2 = b64chars:find(chunk:sub(2, 2)) - 1
+		b64byte3 = b64chars:find(chunk:sub(3, 3)) - 1
+		b64byte4 = b64chars:find(chunk:sub(4, 4)) - 1
 
-        local byte1 = b64byte1 * 4 + math.floor(b64byte2 / 16)
-        local byte2 = (b64byte2 % 16) * 16 + math.floor(b64byte3 / 4)
-        local byte3 = (b64byte3 % 4) * 64 + b64byte4
+		local byte1 = b64byte1 * 4 + math.floor(b64byte2 / 16)
+		local byte2 = (b64byte2 % 16) * 16 + math.floor(b64byte3 / 4)
+		local byte3 = (b64byte3 % 4) * 64 + b64byte4
 
-        result = result .. string.char(byte1)
+		result = result .. string.char(byte1)
 
-        if b64byte3 ~= 64 then
-            result = result .. string.char(byte2)
-        end
+		if b64byte3 ~= 64 then
+			result = result .. string.char(byte2)
+		end
 
-        if b64byte4 ~= 64 then
-            result = result .. string.char(byte3)
-        end
-    end
+		if b64byte4 ~= 64 then
+			result = result .. string.char(byte3)
+		end
+	end
 
-    return result
+	return result
 end
 
 function StrLua.morse_decode(morse_code)
-    if type(morse_code) ~= "string" then
-        error("morse_decode: Argument must be a string")
-    end
+	if type(morse_code) ~= "string" then
+		error("morse_decode: Argument must be a string")
+	end
 
-    local morse_code_map = {
-        [".-"] = "A", ["-..."] = "B", ["-.-."] = "C", ["-.."] = "D", ["."] = "E",
-        ["..-."] = "F", ["--."] = "G", ["...."] = "H", [".."] = "I", [".---"] = "J",
-        ["-.-"] = "K", [".-.."] = "L", ["--"] = "M", ["-."] = "N", ["---"] = "O",
-        [".--."] = "P", ["--.-"] = "Q", [".-."] = "R", ["..."] = "S", ["-"] = "T",
-        ["..-"] = "U", ["...-"] = "V", [".--"] = "W", ["-..-"] = "X", ["-.--"] = "Y",
-        ["--.."] = "Z", ["-----"] = "0", [".----"] = "1", ["..---"] = "2", ["...--"] = "3",
-        ["....-"] = "4", ["....."] = "5", ["-...."] = "6", ["--..."] = "7", ["---.."] = "8",
-        ["----."] = "9", ["/"] = " ", [".-.-.-"] = ".", ["-..-."] = ",", ["..--.."] = "?",
-        ["-.--."] = "(", ["-.--.-"] = ")", ["---..."] = ":", ["-.-.-."] = ";",
-        ["-....-"] = "-", ["..--.-"] = "_", [".-..-."] = "\"", [".-.-."] = "@",
-        [".--.-."] = "!"
-    }
+	local morse_code_map = {
+		[".-"] = "A", ["-..."] = "B", ["-.-."] = "C", ["-.."] = "D", ["."] = "E",
+		["..-."] = "F", ["--."] = "G", ["...."] = "H", [".."] = "I", [".---"] = "J",
+		["-.-"] = "K", [".-.."] = "L", ["--"] = "M", ["-."] = "N", ["---"] = "O",
+		[".--."] = "P", ["--.-"] = "Q", [".-."] = "R", ["..."] = "S", ["-"] = "T",
+		["..-"] = "U", ["...-"] = "V", [".--"] = "W", ["-..-"] = "X", ["-.--"] = "Y",
+		["--.."] = "Z", ["-----"] = "0", [".----"] = "1", ["..---"] = "2", ["...--"] = "3",
+		["....-"] = "4", ["....."] = "5", ["-...."] = "6", ["--..."] = "7", ["---.."] = "8",
+		["----."] = "9", ["/"] = " ", [".-.-.-"] = ".", ["-..-."] = ",", ["..--.."] = "?",
+		["-.--."] = "(", ["-.--.-"] = ")", ["---..."] = ":", ["-.-.-."] = ";",
+		["-....-"] = "-", ["..--.-"] = "_", [".-..-."] = "\"", [".-.-."] = "@",
+		[".--.-."] = "!"
+	}
 
-    local result = ""
-    for word in morse_code:gmatch("%S+") do
-        for char in word:gmatch("%S+") do
-            if char == "/" then
-                result = result .. " "
-            else
-                result = result .. (morse_code_map[char] or "")
-            end
-        end
-        result = result .. " "
-    end
+	local result = ""
+	for word in morse_code:gmatch("%S+") do
+		for char in word:gmatch("%S+") do
+			if char == "/" then
+				result = result .. " "
+			else
+				result = result .. (morse_code_map[char] or "")
+			end
+		end
+		result = result .. " "
+	end
 
-    return result:sub(1, -2) -- remove trailing space
+	return result:sub(1, -2) -- remove trailing space
 end
 
 function StrLua.morse_encode(text)
-    if type(text) ~= "string" then
-        error("morse_encode: Argument must be a string")
-    end
+	if type(text) ~= "string" then
+		error("morse_encode: Argument must be a string")
+	end
 
-    local morse_code_map = {
-        A = ".-", B = "-...", C = "-.-.", D = "-..", E = ".",
-        F = "..-.", G = "--.", H = "....", I = "..", J = ".---",
-        K = "-.-", L = ".-..", M = "--", N = "-.", O = "---",
-        P = ".--.", Q = "--.-", R = ".-.", S = "...", T = "-",
-        U = "..-", V = "...-", W = ".--", X = "-..-", Y = "-.--",
-        Z = "--..", ["0"] = "-----", ["1"] = ".----", ["2"] = "..---",
-        ["3"] = "...--", ["4"] = "....-", ["5"] = ".....", ["6"] = "-....",
-        ["7"] = "--...", ["8"] = "---..", ["9"] = "----.", [" "] = "/",
-        ["."] = ".-.-.-", [","] = "-..-", ["?"] = "..--..", ["("] = "-.--.",
-        [")"] = "-.--.-", [":"] = "---...", [";"] = "-.-.-.", ["-"] = "-....-",
-        ["_"] = "..--.-", ["\""] = ".-..-.", ["@"] = ".--.-.", ["!"] = "-.-.--"
-    }
+	local morse_code_map = {
+		A = ".-", B = "-...", C = "-.-.", D = "-..", E = ".",
+		F = "..-.", G = "--.", H = "....", I = "..", J = ".---",
+		K = "-.-", L = ".-..", M = "--", N = "-.", O = "---",
+		P = ".--.", Q = "--.-", R = ".-.", S = "...", T = "-",
+		U = "..-", V = "...-", W = ".--", X = "-..-", Y = "-.--",
+		Z = "--..", ["0"] = "-----", ["1"] = ".----", ["2"] = "..---",
+		["3"] = "...--", ["4"] = "....-", ["5"] = ".....", ["6"] = "-....",
+		["7"] = "--...", ["8"] = "---..", ["9"] = "----.", [" "] = "/",
+		["."] = ".-.-.-", [","] = "-..-", ["?"] = "..--..", ["("] = "-.--.",
+		[")"] = "-.--.-", [":"] = "---...", [";"] = "-.-.-.", ["-"] = "-....-",
+		["_"] = "..--.-", ["\""] = ".-..-.", ["@"] = ".--.-.", ["!"] = "-.-.--"
+	}
 
-    local result = ""
-    for char in text:upper():gmatch(".") do
-        if char == " " then
-            result = result .. "/ "
-        else
-            result = result .. (morse_code_map[char] or "") .. " "
-        end
-    end
+	local result = ""
+	for char in text:upper():gmatch(".") do
+		if char == " " then
+			result = result .. "/ "
+		else
+			result = result .. (morse_code_map[char] or "") .. " "
+		end
+	end
 
-    return result:sub(1, -2) -- remove trailing space
+	return result:sub(1, -2) -- remove trailing space
 end
 
 --Cat Fact
 
 -- Cat fact database
 local catFacts = {
-  "Cats have a highly developed sense of hearing, and can hear sounds that are too faint for humans to detect.",
-  "Cats have retractable claws, which they use for climbing, hunting, and self-defense.",
-  "A group of cats is called a 'clowder'.",
-  "Cats have three eyelids: an upper lid, a lower lid, and a third lid called the nictitating membrane.",
-  "Cats can't taste sweetness, which is why they often prefer savory foods.",
-  "Cats have 32 muscles in each ear, which allows them to rotate their ears 180 degrees.",
-  "Cats can sleep for up to 16 hours a day, and spend about 1/3 of their lives sleeping.",
-  "Cats are highly territorial, and use scent markings to communicate with other cats.",
-  "Cats can jump up to 5 times their own height in a single bound.",
-  "Cats have a unique nose print, just like human fingerprints.",
-  "Cats can see in low light conditions because their eyes contain a reflective layer called the tapetum lucidum.",
-  "Cats are highly agile, and can right themselves in mid-air to land on their feet.",
-  "Cats have a special talent for recognizing and mimicking human voices.",
-  "Cats can live up to 17 years or more in captivity, with some breeds living up to 20 years or more.",
-  "Cats are highly intelligent, and can solve simple problems and learn from experience.",
-  "Cats have a special type of eye structure that allows them to see ultraviolet light.",
-  "Cats can't see directly under their noses, which is why they often use their whiskers to detect objects.",
-  "Cats have a unique way of walking called a 'righting reflex', which allows them to always land on their feet.",
-  "Cats can produce over 100 different vocal sounds, including meows, purrs, hisses, and growls.",
-  "Cats have a highly developed sense of smell, and can detect pheromones that are invisible to humans.",
-  "Cats can be right- or left-pawed, just like humans are right- or left-handed.",
-  "Cats have a special type of fur that helps to reduce noise, making them expert hunters.",
-  "Cats can be trained to do tricks and obey commands, just like dogs.",
-  "Cats have a unique way of communicating with each other through body language and vocalizations.",
-  "Cats can be very affectionate, and often form strong bonds with their human caregivers.",
-  "Cats have a special type of whisker that helps them to detect changes in air pressure, which can predict weather changes."
+	"Cats have a highly developed sense of hearing, and can hear sounds that are too faint for humans to detect.",
+	"Cats have retractable claws, which they use for climbing, hunting, and self-defense.",
+	"A group of cats is called a 'clowder'.",
+	"Cats have three eyelids: an upper lid, a lower lid, and a third lid called the nictitating membrane.",
+	"Cats can't taste sweetness, which is why they often prefer savory foods.",
+	"Cats have 32 muscles in each ear, which allows them to rotate their ears 180 degrees.",
+	"Cats can sleep for up to 16 hours a day, and spend about 1/3 of their lives sleeping.",
+	"Cats are highly territorial, and use scent markings to communicate with other cats.",
+	"Cats can jump up to 5 times their own height in a single bound.",
+	"Cats have a unique nose print, just like human fingerprints.",
+	"Cats can see in low light conditions because their eyes contain a reflective layer called the tapetum lucidum.",
+	"Cats are highly agile, and can right themselves in mid-air to land on their feet.",
+	"Cats have a special talent for recognizing and mimicking human voices.",
+	"Cats can live up to 17 years or more in captivity, with some breeds living up to 20 years or more.",
+	"Cats are highly intelligent, and can solve simple problems and learn from experience.",
+	"Cats have a special type of eye structure that allows them to see ultraviolet light.",
+	"Cats can't see directly under their noses, which is why they often use their whiskers to detect objects.",
+	"Cats have a unique way of walking called a 'righting reflex', which allows them to always land on their feet.",
+	"Cats can produce over 100 different vocal sounds, including meows, purrs, hisses, and growls.",
+	"Cats have a highly developed sense of smell, and can detect pheromones that are invisible to humans.",
+	"Cats can be right- or left-pawed, just like humans are right- or left-handed.",
+	"Cats have a special type of fur that helps to reduce noise, making them expert hunters.",
+	"Cats can be trained to do tricks and obey commands, just like dogs.",
+	"Cats have a unique way of communicating with each other through body language and vocalizations.",
+	"Cats can be very affectionate, and often form strong bonds with their human caregivers.",
+	"Cats have a special type of whisker that helps them to detect changes in air pressure, which can predict weather changes."
 }
 
 -- Function to generate a random cat fact
 local function generateCatFact()
-  local factIndex = math.random(#catFacts)
-  return catFacts[factIndex]
+	local factIndex = math.random(#catFacts)
+	return catFacts[factIndex]
 end
 
 -- XOR
 
 -- Function to XOR encrypt a string
 local function xor_encrypt(plain_text, key)
-  local encrypted_text = ""
-  for i = 1, #plain_text do
-    local char_code = string.byte(plain_text, i)
-    local key_code = string.byte(key, (i % #key) + 1)
-    local encrypted_char_code = char_code ~ key_code
-    encrypted_text = encrypted_text.. string.char(encrypted_char_code)
-  end
-  return encrypted_text
+	local encrypted_text = ""
+	for i = 1, #plain_text do
+		local char_code = string.byte(plain_text, i)
+		local key_code = string.byte(key, (i % #key) + 1)
+		local encrypted_char_code = bit32.bxor(char_code, key_code)
+		encrypted_text = encrypted_text.. string.char(encrypted_char_code)
+	end
+	return encrypted_text
 end
 
 -- Function to XOR decrypt a string
 local function xor_decrypt(encrypted_text, key)
-  local decrypted_text = ""
-  for i = 1, #encrypted_text do
-    local char_code = string.byte(encrypted_text, i)
-    local key_code = string.byte(key, (i % #key) + 1)
-    local decrypted_char_code = char_code ~ key_code
-    decrypted_text = decrypted_text.. string.char(decrypted_char_code)
-  end
-  return decrypted_text
+	local decrypted_text = ""
+	for i = 1, #encrypted_text do
+		local char_code = string.byte(encrypted_text, i)
+		local key_code = string.byte(key, (i % #key) + 1)
+		local decrypted_char_code = bit32.bxor(char_code, key_code)
+		decrypted_text = decrypted_text.. string.char(decrypted_char_code)
+	end
+	return decrypted_text
 end
 
 --[[ Example usage:
