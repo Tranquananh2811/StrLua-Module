@@ -8,6 +8,10 @@ StrLua is a Lua module that provides a set of string manipulation functions, sim
 
 People should use StrLua because it provides a convenient and efficient way to work with strings in Lua, similar to how the str module works in Python. By using StrLua, developers can write more concise and readable code, and avoid having to implement common string manipulation functions from scratch. Additionally, StrLua's functions are designed to be intuitive and easy to use, making it a great choice for anyone working with strings in Lua.
 
+## 📝 Devforum Post 📝
+
+https://devforum.roblox.com/t/introduce-to-strlua-module/3077070
+
 ## **📝 Contact Information 🗣️**
 
 **Discord:** sutart_da_penguin (sutart) or noob1182 (sir_pretender)
